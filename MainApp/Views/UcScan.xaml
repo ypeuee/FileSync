@@ -6,7 +6,8 @@
               xmlns:radar="clr-namespace:RadarControl;assembly=AppControlLibrary"
              xmlns:local="clr-namespace:MainApp.Views"
              mc:Ignorable="d" 
-              d:DesignHeight="470"  d:DesignWidth="340" Background="White" Loaded="UserControl_Loaded" >
+              d:DesignHeight="470"  d:DesignWidth="340" Background="White"
+              IsVisibleChanged="UserControl_IsVisibleChanged">
     <Grid>
         <DockPanel Margin="0,40,0,0" Height="300" VerticalAlignment="Top">
             <radar:RadarMeter DockPanel.Dock="Left" Width="300" 
@@ -26,7 +27,7 @@
             <Label Content="%" FontSize="50" Foreground="#FF009CFE" VerticalAlignment="Bottom"/>
         </DockPanel>
         <DockPanel Margin="0,0,0,60" VerticalAlignment="Bottom" HorizontalAlignment="Center" >
-              <Label Content="正在比较云端本地目录..." FontSize="15" VerticalAlignment="Bottom"/>
+              <Label Name="LblMsg" Content="正在比较云端本地目录..." FontSize="15" VerticalAlignment="Bottom"/>
         </DockPanel>
     </Grid>
 </UserControl>
