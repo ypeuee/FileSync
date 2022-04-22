@@ -15,7 +15,7 @@ namespace FileSync
         /// </summary>
         /// <param name="pathFrom"></param>
         /// <param name="pathTo"></param>
-        public void DirectoriesReName(string pathFrom, string pathTo, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void DirectoriesReName(string pathFrom, string pathTo,bool isExecute=true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
         {
             //只处理同级目录下，修改文件夹名称
             var fromFileList = DirectoriesLists(pathFrom);
@@ -25,6 +25,10 @@ namespace FileSync
             var tempAdds = CalculateAddDirectoriesList(fromFileList, toFileList);
             //查找到需要同步的文件回调
             actionFileList?.Invoke(tempAdds.Select(m => m.Name).ToList());
+
+            //不执行
+            if (!isExecute)
+                return;
 
             foreach (var item in tempAdds)
             {
@@ -151,7 +155,7 @@ namespace FileSync
             return catchFIleList;
         }
 
-        public void CopyAddDirectories(string pathFrom, string pathTo, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyAddDirectories(string pathFrom, string pathTo, bool isExecute = true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
         {
             var fromFileList = DirectoriesLists(pathFrom);
 
@@ -161,6 +165,11 @@ namespace FileSync
             var tempAdds = CalculateAddDirectoriesList(fromFileList, toFileList);
             //查找到需要同步的文件回调
             actionFileList?.Invoke(tempAdds.Select(m => m.Name).ToList());
+
+            //不执行
+            if (!isExecute)
+                return;
+
             foreach (var item in tempAdds)
             {
                 Console.WriteLine($"add {item.FullName}");
@@ -177,7 +186,7 @@ namespace FileSync
             }
         }
 
-        public void CopyDelDirectories(string pathFrom, string pathTo, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyDelDirectories(string pathFrom, string pathTo, bool isExecute = true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
         {
             var fromFileList = DirectoriesLists(pathFrom);
 
@@ -187,6 +196,11 @@ namespace FileSync
             var tempDels = CalculateDelDirectories(fromFileList, toFileList);
             //查找到需要同步的文件回调
             actionFileList?.Invoke(tempDels.Select(m => m.Name).ToList());
+
+            //不执行
+            if (!isExecute)
+                return; 
+            
             foreach (var item in tempDels)
             {
                 Console.WriteLine($"del {item.FullName} ");

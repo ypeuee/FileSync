@@ -148,7 +148,7 @@ namespace FileSync
 
         }
 
-        public void CopyAddFile(string pathFrom, string pathTo, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyAddFile(string pathFrom, string pathTo, bool isExecute= true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
         {
             var fromFileList = FileLists(pathFrom);
 
@@ -157,7 +157,12 @@ namespace FileSync
             //add
             var tempAdds = CalculateAddFile(fromFileList, toFileList);
             //查找到需要同步的文件回调
-            actionFileList.Invoke(tempAdds.Select(m => m.Name).ToList());
+            actionFileList?.Invoke(tempAdds.Select(m => m.Name).ToList());
+
+            //不执行
+            if (!isExecute)
+                return;
+
             foreach (var item in tempAdds)
             {
                 Console.WriteLine($"add {item.FullName}");
@@ -178,7 +183,7 @@ namespace FileSync
 
         }
 
-        public void CopyUpdFile(string pathFrom, string pathTo, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyUpdFile(string pathFrom, string pathTo, bool isExecute = true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
         {
             var fromFileList = FileLists(pathFrom);
 
@@ -188,6 +193,11 @@ namespace FileSync
             var tempUpds = CalculateUpdFile(fromFileList, toFileList);
             //查找到需要同步的文件回调
             actionFileList?.Invoke(tempUpds.Select(m => m.ToFile.Name).ToList());
+           
+            //不执行
+            if (!isExecute)
+                return;
+            
             foreach (var item in tempUpds)
             {
                 Console.WriteLine($"upd {item.FromFile.FullName} {item.FromFile.LastAccessTime}:{item.ToFile.LastAccessTime}");
@@ -200,7 +210,7 @@ namespace FileSync
 
         }
 
-        public void CopyDelFile(string pathFrom, string pathTo, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyDelFile(string pathFrom, string pathTo, bool isExecute = true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
         {
             var fromFileList = FileLists(pathFrom);
 
@@ -210,6 +220,10 @@ namespace FileSync
             var tempDels = CalculateDelFile(fromFileList, toFileList);
             //查找到需要同步的文件回调
             actionFileList?.Invoke(tempDels.Select(m => m.Name).ToList());
+
+            //不执行
+            if (!isExecute)
+                return;
 
             foreach (var item in tempDels)
             {

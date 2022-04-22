@@ -38,19 +38,19 @@ namespace MainApp.Views
 
         private void meter_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (meter.IsStarted)
-            {
-                meter.Stop();
-                this.Visibility = Visibility.Hidden;
+            //if (meter.IsStarted)
+            //{
+            //    meter.Stop();
+            //    this.Visibility = Visibility.Hidden;
 
-                if (StopClick != null)
-                    StopClick(sender, e);
+            //    if (StopClick != null)
+            //        StopClick(sender, e);
 
-            }
-            else
-            {
-                meter.Start();
-            }
+            //}
+            //else
+            //{
+            //    meter.Start();
+            //}
         }
 
         //显示时，自动开启动画
@@ -58,8 +58,12 @@ namespace MainApp.Views
         {
             if (!meter.IsStarted)
             {
-                if ((Visibility)e.NewValue == Visibility.Visible)
+                if ((bool)e.NewValue) //== Visibility.Visible)
+                {
+                    Reset();
                     meter.Start();
+                    Main();
+                }
             }
         }
 
@@ -72,15 +76,12 @@ namespace MainApp.Views
             var config = builder.Build();
 
             //文件同步
-            if (bool.Parse(config["FileSync:Execute"]))
-            {
-                Console.WriteLine("文件同步");
-                var fileSync = new FileSync.FileSync();
-                fileSync.Exectue(config);
-            }
+
+            Console.WriteLine("文件同步");
+            Exectue(config);
 
             Console.WriteLine("完成执行，按任意键退出。");
-            Console.ReadKey();
+
         }
 
         /// <summary>
@@ -107,45 +108,96 @@ namespace MainApp.Views
                 return;
             }
 
-            //线程执行
-            Task.Factory.StartNew(() =>
-           {
-               var dirSync = new DirectoriesSync();
-               var fileSync = new FileSync.FileSync();
+            //线程执行      
+            Task task = Task.Factory.StartNew(() =>
+             {
+                 var dirSync = new DirectoriesSync();
+                 var fileSync = new FileSync.FileSync();
 
-               dirSync.DirectoriesReName(pathFrom, pathTo
-                   , ActionFileList, ActionFile, ActionFileProgress);
+                 //只计算
+                 bool isExecute = false;
 
-               //文件
-               fileSync.CopyAddFile(pathFrom, pathTo
-                  , ActionFileList, ActionFile, ActionFileProgress);
-               fileSync.CopyUpdFile(pathFrom, pathTo
-                   , ActionFileList, ActionFile, ActionFileProgress);
-               fileSync.CopyDelFile(pathFrom, pathTo
-                   , ActionFileList, ActionFile, ActionFileProgress);
-               //文件夹
-               dirSync.CopyAddDirectories(pathFrom, pathTo
-                  , ActionFileList, ActionFile, ActionFileProgress);
-               dirSync.CopyDelDirectories(pathFrom, pathTo
-                   , ActionFileList, ActionFile, ActionFileProgress);
-           });
+
+                 dirSync.DirectoriesReName(pathFrom, pathTo
+                    , isExecute, ActionFileList);
+
+                 //文件
+                 fileSync.CopyAddFile(pathFrom, pathTo
+                      , isExecute, ActionFileList);
+                 fileSync.CopyUpdFile(pathFrom, pathTo
+                    , isExecute, ActionFileList);
+                 fileSync.CopyDelFile(pathFrom, pathTo
+                     , isExecute, ActionFileList);
+                 //文件夹
+                 dirSync.CopyAddDirectories(pathFrom, pathTo
+                      , isExecute, ActionFileList);
+                 dirSync.CopyDelDirectories(pathFrom, pathTo
+                  , isExecute, ActionFileList);
+
+                 //执行
+                 isExecute = true;
+                 dirSync.DirectoriesReName(pathFrom, pathTo
+                   , actionFileProgress: ActionFileProgress);
+
+                 //文件
+                 fileSync.CopyAddFile(pathFrom, pathTo
+                     , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
+                 fileSync.CopyUpdFile(pathFrom, pathTo
+                    , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
+                 fileSync.CopyDelFile(pathFrom, pathTo
+                     , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
+                 //文件夹
+                 dirSync.CopyAddDirectories(pathFrom, pathTo
+                       , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
+                 dirSync.CopyDelDirectories(pathFrom, pathTo
+                  , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
+
+             });
+
+
+            task.ContinueWith((obj) =>
+            {
+                End();
+                System.Threading.Thread.Sleep(1000);
+
+                meter.Stop();
+                this.Dispatcher.Invoke(() => { Visibility = Visibility.Hidden; });
+            });
+
 
         }
 
+        /// <summary>
+        /// 重置进度
+        /// </summary>
+        void Reset()
+        {
+            FileTotalNum = 0;
+            FIleIndex = 0;
+            ShowNum("0");
+            ShowMsg("正在比较云端本地目录...");
+        }
 
+        /// <summary>
+        /// 同步结束
+        /// </summary>
+        void End()
+        {
+            FileTotalNum = 0;
+            FIleIndex = 0;
+            ShowNum("100");
+            ShowMsg("同步完成");
+        }
 
-        int NumValue = 0;
+        int FileTotalNum = 0;
+        int FIleIndex = 0;
         /// <summary>
         /// 回调函数，当前同步的文件列表
         /// </summary>
         /// <param name="fileList"></param>
         void ActionFileList(List<string> fileList)
         {
-            if (NumValue >= 100)
-                NumValue = 0;
-
-            NumValue += 10;
-            ShowNum(NumValue.ToString());
+            FileTotalNum += fileList.Count;
         }
 
         /// <summary>
@@ -164,7 +216,9 @@ namespace MainApp.Views
         /// <param name="progress"></param>
         private void ActionFileProgress(string file, int progress)
         {
-
+            FIleIndex++;
+            ShowNum(((int)(FIleIndex * 100.00 / FileTotalNum)).ToString());
+            System.Threading.Thread.Sleep(500);
         }
 
         /// <summary>
@@ -188,7 +242,7 @@ namespace MainApp.Views
             if (lblNum.CheckAccess())
                 lblNum.Content = value;
             else
-                lblNum.Dispatcher.Invoke(new Action<string>((m) => ShowMsg(m)), value);
+                lblNum.Dispatcher.Invoke(new Action<string>((m) => ShowNum(m)), value);
         }
 
     }
