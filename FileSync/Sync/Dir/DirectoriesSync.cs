@@ -15,7 +15,7 @@ namespace FileSync
         /// </summary>
         /// <param name="pathFrom"></param>
         /// <param name="pathTo"></param>
-        public void DirectoriesReName(string pathFrom, string pathTo,bool isExecute=true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void DirectoriesReName(string pathFrom, string pathTo,bool isExecute=true, Action<SyncType,List< string>> actionFileList = null, Action<SyncType, string> actionFile = null, Action<SyncType,string, int> actionFileProgress = null)
         {
             //只处理同级目录下，修改文件夹名称
             var fromFileList = DirectoriesLists(pathFrom);
@@ -24,7 +24,7 @@ namespace FileSync
             //add
             var tempAdds = CalculateAddDirectoriesList(fromFileList, toFileList);
             //查找到需要同步的文件回调
-            actionFileList?.Invoke(tempAdds.Select(m => m.Name).ToList());
+            actionFileList?.Invoke(SyncType.DirReName, tempAdds.Select(m => m.Name).ToList());
 
             //不执行
             if (!isExecute)
@@ -61,11 +61,11 @@ namespace FileSync
                     {
                         Console.WriteLine($"rename {dif} --> {item.FullName}");
                       //当前同步的文件回调
-                        actionFile?.Invoke(item.Name);
+                        actionFile?.Invoke(SyncType.DirReName, item.Name);
 
                         Directory.Move(pathTo + dif, pathTo + item.FullName);
                         //当前同步进度回调
-                        actionFileProgress?.Invoke(item.Name, 100);
+                        actionFileProgress?.Invoke(SyncType.DirReName, item.Name, 100);
                     }
                 }
             }
@@ -121,16 +121,16 @@ namespace FileSync
         /// <param name="homePath"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        List<DirectoriesM> DirectoriesLists(string homePath, string path = null)
+        List<DirectorieM> DirectoriesLists(string homePath, string path = null)
         {
             if (path == null)
                 path = homePath;
 
-            List<DirectoriesM> catchFIleList = new List<DirectoriesM>();
+            List<DirectorieM> catchFIleList = new List<DirectorieM>();
 
             var dirInfo = new DirectoryInfo(path);
             var dirs = dirInfo.GetDirectories();
-            DirectoriesM catchFile;
+            DirectorieM catchFile;
             foreach (var dir in dirs)
             {
                 if (dir.Attributes == FileAttributes.Directory)
@@ -138,7 +138,7 @@ namespace FileSync
                     var items = DirectoriesLists(homePath, dir.FullName);
                     catchFIleList.AddRange(items);
 
-                    catchFile = new DirectoriesM()
+                    catchFile = new DirectorieM()
                     {
                         Name = dir.Name,
                         FullName = dir.FullName.Replace(homePath, ""),
@@ -155,7 +155,8 @@ namespace FileSync
             return catchFIleList;
         }
 
-        public void CopyAddDirectories(string pathFrom, string pathTo, bool isExecute = true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyAddDirectories(string pathFrom, string pathTo, 
+            bool isExecute = true, Action<SyncType, List<string>> actionFileList = null, Action<SyncType, string> actionFile = null, Action<SyncType, string, int> actionFileProgress = null)
         {
             var fromFileList = DirectoriesLists(pathFrom);
 
@@ -164,7 +165,7 @@ namespace FileSync
             //add
             var tempAdds = CalculateAddDirectoriesList(fromFileList, toFileList);
             //查找到需要同步的文件回调
-            actionFileList?.Invoke(tempAdds.Select(m => m.Name).ToList());
+            actionFileList?.Invoke(SyncType.DirAdd, tempAdds.Select(m => m.Name).ToList());
 
             //不执行
             if (!isExecute)
@@ -174,7 +175,7 @@ namespace FileSync
             {
                 Console.WriteLine($"add {item.FullName}");
                 //当前同步的文件回调
-                actionFile?.Invoke(item.Name);
+                actionFile?.Invoke(SyncType.DirAdd, item.Name);
 
                 string toPath = pathTo + item.FullName;// Path.Combine(pathTo, item.Path);
                 if (!Directory.Exists(toPath))
@@ -182,11 +183,12 @@ namespace FileSync
                     Directory.CreateDirectory(toPath);
                 }
                 //当前同步进度回调
-                actionFileProgress?.Invoke(item.Name, 100);
+                actionFileProgress?.Invoke(SyncType.DirAdd, item.Name, 100);
             }
         }
 
-        public void CopyDelDirectories(string pathFrom, string pathTo, bool isExecute = true, Action<List<string>> actionFileList = null, Action<string> actionFile = null, Action<string, int> actionFileProgress = null)
+        public void CopyDelDirectories(string pathFrom, string pathTo, 
+            bool isExecute = true, Action<SyncType, List<string>> actionFileList = null, Action<SyncType, string> actionFile = null, Action<SyncType, string, int> actionFileProgress = null)
         {
             var fromFileList = DirectoriesLists(pathFrom);
 
@@ -195,7 +197,7 @@ namespace FileSync
             //del
             var tempDels = CalculateDelDirectories(fromFileList, toFileList);
             //查找到需要同步的文件回调
-            actionFileList?.Invoke(tempDels.Select(m => m.Name).ToList());
+            actionFileList?.Invoke(SyncType.DirDel, tempDels.Select(m => m.Name).ToList());
 
             //不执行
             if (!isExecute)
@@ -205,11 +207,11 @@ namespace FileSync
             {
                 Console.WriteLine($"del {item.FullName} ");
                 //当前同步的文件回调
-                actionFile?.Invoke(item.Name);
+                actionFile?.Invoke(SyncType.DirDel, item.Name);
 
                 Directory.Delete(pathTo + item.FullName);
                 //当前同步进度回调
-                actionFileProgress?.Invoke(item.Name, 100);
+                actionFileProgress?.Invoke(SyncType.DirDel, item.Name, 100);
             }
 
         }
@@ -220,7 +222,7 @@ namespace FileSync
         /// <param name="fromFileList"></param>
         /// <param name="toFileList"></param>
         /// <returns></returns>
-        List<DirectoriesM> CalculateAddDirectoriesList(List<DirectoriesM> fromFileList, List<DirectoriesM> toFileList)
+        List<DirectorieM> CalculateAddDirectoriesList(List<DirectorieM> fromFileList, List<DirectorieM> toFileList)
         {
             var temps = from f in fromFileList
                         join t in toFileList
@@ -243,7 +245,7 @@ namespace FileSync
         /// <param name="fromFileList"></param>
         /// <param name="toFileList"></param>
         /// <returns></returns>
-        List<DirectoriesM> CalculateDelDirectories(List<DirectoriesM> fromFileList, List<DirectoriesM> toFileList)
+        List<DirectorieM> CalculateDelDirectories(List<DirectorieM> fromFileList, List<DirectorieM> toFileList)
         {
             var temps = from t in toFileList
                         join f in fromFileList
@@ -251,7 +253,7 @@ namespace FileSync
                         items
                         from item in items.DefaultIfEmpty()
                             //where item.FileName == null
-                        select new CalcuateDirectoriesM
+                        select new CalcuateDirectorieM
                         {
                             FromDirectories = item,
                             ToDirectories = t

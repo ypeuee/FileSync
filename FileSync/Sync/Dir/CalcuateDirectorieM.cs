@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace FileSync
 {
-    class CalcuateDirectoriesM
+    class CalcuateDirectorieM
     {
         /// <summary>
         /// 源
         /// </summary>
-        public DirectoriesM FromDirectories { get; set; }
+        public DirectorieM FromDirectories { get; set; }
 
         /// <summary>
         /// 目标
         /// </summary>
-        public DirectoriesM ToDirectories { get; set; }
+        public DirectorieM ToDirectories { get; set; }
     }
 }

@@ -1,21 +1,15 @@
 ﻿using FileSync;
 using Microsoft.Extensions.Configuration;
+using RadarControl;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MainApp.Views
 {
@@ -33,7 +27,7 @@ namespace MainApp.Views
         /// 扫描结束事件
         /// </summary>
         [Category("Behavior")]
-        public event RoutedEventHandler StopClick;
+        public event Action<string, bool> StopClick;
 
 
         private void meter_MouseDown(object sender, MouseButtonEventArgs e)
@@ -62,26 +56,16 @@ namespace MainApp.Views
                 {
                     Reset();
                     meter.Start();
-                    Main();
+                    //文件同步
+                    Exectue(ConfigurationFile.Configuration);
                 }
             }
-        }
 
-        void Main()
-        {
-            Console.WriteLine("开始执行");
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json");
-            var config = builder.Build();
-
-            //文件同步
-
-            Console.WriteLine("文件同步");
-            Exectue(config);
-
-            Console.WriteLine("完成执行，按任意键退出。");
-
+            if (!(bool)e.NewValue)
+            {
+                if (StopClick != null)
+                    StopClick("执行完成!", true);
+            }
         }
 
         /// <summary>
@@ -154,7 +138,6 @@ namespace MainApp.Views
 
              });
 
-
             task.ContinueWith((obj) =>
             {
                 End();
@@ -164,7 +147,6 @@ namespace MainApp.Views
                 this.Dispatcher.Invoke(() => { Visibility = Visibility.Hidden; });
             });
 
-
         }
 
         /// <summary>
@@ -172,6 +154,12 @@ namespace MainApp.Views
         /// </summary>
         void Reset()
         {
+            //清空信号源
+            meter.Dispatcher.Invoke(() =>
+            {
+                meter.SignalCollection.Clear();
+            });
+
             FileTotalNum = 0;
             FIleIndex = 0;
             ShowNum("0");
@@ -195,16 +183,21 @@ namespace MainApp.Views
         /// 回调函数，当前同步的文件列表
         /// </summary>
         /// <param name="fileList"></param>
-        void ActionFileList(List<string> fileList)
+        void ActionFileList(SyncType syncType, List<string> fileList)
         {
             FileTotalNum += fileList.Count;
+
+            foreach (var file in fileList)
+            {
+                AddSignal(syncType, file);
+            }
         }
 
         /// <summary>
         /// 回调函数，当前同步的文件
         /// </summary>
         /// <param name="file"></param>
-        private void ActionFile(string file)
+        private void ActionFile(SyncType syncType, string file)
         {
             ShowMsg(file);
         }
@@ -214,11 +207,74 @@ namespace MainApp.Views
         /// </summary>
         /// <param name="file"></param>
         /// <param name="progress"></param>
-        private void ActionFileProgress(string file, int progress)
+        private void ActionFileProgress(SyncType syncType, string file, int progress)
         {
+            DelSignal();
             FIleIndex++;
-            ShowNum(((int)(FIleIndex * 100.00 / FileTotalNum)).ToString());
+            var value = ((int)(FIleIndex * 100.00 / FileTotalNum));
+            if (value > 100)
+                value = 100;
+            ShowNum(value.ToString());
             System.Threading.Thread.Sleep(500);
+        }
+
+        void AddSignal(SyncType syncType, string path)
+        {
+            Color color;
+            switch (syncType)
+            {
+                case SyncType.DirDel:
+                    color = Colors.DarkRed;
+                    break;
+                case SyncType.DirAdd:
+                    color = Colors.DarkGreen;
+                    break;
+                case SyncType.DirReName:
+                    color = Colors.GreenYellow;
+                    break;
+                case SyncType.FileDel:
+                    color = Colors.Red;
+                    break;
+                case SyncType.FileAdd:
+                    color = Colors.Green;
+                    break;
+                case SyncType.FileUpd:
+                    color = Colors.Blue;
+                    break;
+                default:
+                    color = Colors.Blue;
+                    break;
+            }
+
+
+            //添加信号源
+            meter.Dispatcher.Invoke(new Action<string, Color>((p, c) =>
+            {
+                Random random = new Random(DateTime.Now.Millisecond);
+                RadarSignal rs = new RadarSignal(30, new SolidColorBrush(color),
+                  random.Next((int)RadarMeter.MinDistance,
+                  (int)RadarMeter.MaxDistance + 1),
+                  random.Next(0, 300))
+                { ToolTip = path };
+                meter.SignalCollection.Add(rs);
+            }), path, color);
+
+            // Random random = new Random(DateTime.Now.Millisecond);
+            //RadarSignal rs = new RadarSignal(30, new SolidColorBrush(color),
+            //        random.Next((int)RadarMeter.MinDistance, (int)RadarMeter.MaxDistance + 1), random.Next(0, 360));
+            //rs.ToolTip = path;
+            //meter.SignalCollection.Add(rs);
+        }
+
+        //删除第一个信号源
+        void DelSignal()
+        {
+            meter.Dispatcher.Invoke(new Action(() =>
+            {
+                //删除第一个信号源
+                if (meter.SignalCollection.Count > 0)
+                    meter.SignalCollection.RemoveAt(0);
+            }));
         }
 
         /// <summary>

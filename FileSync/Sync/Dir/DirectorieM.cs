@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FileSync
 {
-       public class DirectoriesM
+    public class DirectorieM
     {
         /// <summary>
         /// 文件名称

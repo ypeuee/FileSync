@@ -11,7 +11,7 @@
     <Grid>
         <DockPanel Margin="0,40,0,0" Height="300" VerticalAlignment="Top">
             <radar:RadarMeter DockPanel.Dock="Left" Width="300" 
-                          Name="meter" ToolTip="正在同步"
+                          Name="meter" 
                           MouseDown="meter_MouseDown" 
                           DialFill="White" DialStroke="#FF009CFE" DialStrokeThickness="1" ScanOpacity="1">
                 <radar:RadarMeter.ScanFill>

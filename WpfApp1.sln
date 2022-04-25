@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSync", "FileSync\FileSync.csproj", "{B03086EE-BD58-4F26-8024-36F6CDF3E26E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppControlLibrary", "AppControlLibrary\AppControlLibrary.csproj", "{4D700744-DACF-4326-9BCA-B92C3C190FD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppControlLibrary", "AppControlLibrary\AppControlLibrary.csproj", "{4D700744-DACF-4326-9BCA-B92C3C190FD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{A7357C62-1ABA-4F96-9BBF-446C0AFED46E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{A7357C62-1ABA-4F96-9BBF-446C0AFED46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApp", "MainApp\MainApp.csproj", "{22BEC4CF-0F5B-42F9-A54C-9126D98874CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSyncApp", "MainApp\FileSyncApp.csproj", "{22BEC4CF-0F5B-42F9-A54C-9126D98874CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

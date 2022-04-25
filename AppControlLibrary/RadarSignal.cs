@@ -12,6 +12,15 @@ namespace RadarControl
 {
     public class RadarSignal
     {
+        private string toolTip;
+
+        public string ToolTip
+        {
+            get { return toolTip; }
+            set { toolTip = value; }
+        }
+
+
         /// <summary>
         /// 用户自定义数据
         /// </summary>
@@ -227,6 +236,8 @@ namespace RadarControl
             model.RenderTransform = group;
             Storyboard.SetTarget(animation, model);
             Storyboard.SetTargetProperty(animation, new PropertyPath("(Ellipse.Opacity)"));
+
+            model.ToolTip = toolTip;
         }
 
         /// <summary>

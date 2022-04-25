@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MainApp.Tools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +26,8 @@ namespace MainApp.Views
         public UcMain()
         {
             InitializeComponent();
+
+            BindPath();
         }
 
         /// <summary>
@@ -44,6 +48,8 @@ namespace MainApp.Views
             pathStart.Visibility = Visibility.Hidden;
         }
         #endregion
+
+
 
         /// <summary>
         /// 开始按钮事件
@@ -83,9 +89,33 @@ namespace MainApp.Views
 
         }
 
+        /// <summary>
+        /// 打开源文件夹
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnFrom_Click(object sender, RoutedEventArgs e)
+        {
+            Open.OpenDir(lblFrom.Content.ToString());
+        }
 
+        /// <summary>
+        /// 打开目标文件夹
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTo_Click(object sender, RoutedEventArgs e)
+        {
+            Open.OpenDir(lblTo.Content.ToString());
+        }
 
-
-
+        /// <summary>
+        /// 绑定源和目标路径
+        /// </summary>
+        void BindPath()
+        {
+            lblFrom.Content = FileSync.ConfigurationFile.Configuration["FileSync:PathFrom"];
+            lblTo.Content = FileSync.ConfigurationFile.Configuration["FileSync:PathTo"];
+        }
     }
 }
