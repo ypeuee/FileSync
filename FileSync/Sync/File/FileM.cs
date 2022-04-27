@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FileSync
+namespace FileSync.Sync.File
 {
     public class FileM
     {
+        public FileM() { }
         /// <summary>
         /// 文件名称
         /// </summary>

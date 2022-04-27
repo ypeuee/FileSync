@@ -15,9 +15,8 @@ namespace FileSync.Sync
         FileAdd fileAdd;
         FIleUpdate fileUpd;
         FileDelete fileDel;
-        FileReName fileReName;
         public SyncStart(DirectoriesAdd dirAdd, DirectoriesDelete dirDel, DirectoriesReName dirReName
-            , FileAdd fileAdd, FIleUpdate fileUpd, FileDelete fileDel, FileReName fileReName)
+            , FileAdd fileAdd, FIleUpdate fileUpd, FileDelete fileDel)
         {
             this.dirAdd = dirAdd;
             this.dirDel = dirDel;
@@ -26,8 +25,6 @@ namespace FileSync.Sync
             this.fileAdd = fileAdd;
             this.fileUpd = fileUpd;
             this.fileDel = fileDel;
-            this.fileReName = fileReName;
-
         }
         public void Main()
         {

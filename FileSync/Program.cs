@@ -25,7 +25,7 @@ namespace FileSync
                {
                    services.AddHostedService<StartupService>();
                    services.AddApplication<FileSyncModule>(hostingContext.Configuration);
-
+             
                    //注入弹性数据库
                    //services.AddData<ElasticDatabaseModule>(hostingContext.Configuration);
                });

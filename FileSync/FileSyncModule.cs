@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace FileSync
 {
-  
+
+    using FileSync.Sync;
     using FileSync.Sync.Directories;
     using FileSync.Sync.File;
-    using FileSync.Sync;
 
     /// <summary>
     /// 数据库连接对象注入
