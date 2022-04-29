@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp1", "WpfApp1\WpfApp1.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSyncApp", "MainApp\FileSyncApp.csproj", "{22BEC4CF-0F5B-42F9-A54C-9126D98874CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIleSyncData", "FIleSyncData\FIleSyncData.csproj", "{9CF36455-1026-4512-AFC7-0A27D99167CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{22BEC4CF-0F5B-42F9-A54C-9126D98874CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22BEC4CF-0F5B-42F9-A54C-9126D98874CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22BEC4CF-0F5B-42F9-A54C-9126D98874CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF36455-1026-4512-AFC7-0A27D99167CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF36455-1026-4512-AFC7-0A27D99167CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF36455-1026-4512-AFC7-0A27D99167CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF36455-1026-4512-AFC7-0A27D99167CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
