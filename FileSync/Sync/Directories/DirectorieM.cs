@@ -1,13 +1,14 @@
-﻿using System;
+﻿using FileSync.Sync.File;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSync
+namespace FileSync.Sync.Directories
 {
-       public class DirectoriesM
+    public class DirectorieM
     {
         /// <summary>
         /// 文件名称

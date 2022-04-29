@@ -26,7 +26,7 @@
                 <Button Content="开始同步"  Width="90" Height="23" Style="{StaticResource StartStyle}" Click="btnStart_Click"  MouseEnter="btnStart_MouseEnter" MouseLeave="btnStart_MouseLeave" />
             </StackPanel>
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="400">
-                <Button Width="300"  Height="72" Background="White" BorderBrush="#FFCCCCCC" Cursor="Hand">
+                <Button Width="300"  Height="72" Background="White" BorderBrush="#FFCCCCCC" Cursor="Hand" Click="btnFrom_Click">
                     <StackPanel Width="250" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Viewbox Width="32" Height="32" >
                             <Canvas Width="24" Height="24">
@@ -36,7 +36,7 @@
                         <Grid Width="10"/>
                         <StackPanel>
                             <Label Content="我的微云文件"/>
-                            <Label Content="花心大白菜(56514778)" Foreground="#FF7F7F7F"/>
+                            <Label  Name="lblTo"  Content="花心大白菜(56514778)" Foreground="#FF7F7F7F"/>
                         </StackPanel>
                     </StackPanel>
                 </Button>
@@ -45,7 +45,7 @@
                         <Path Fill="#FFCCCCCC" Data="M9,3L5,7H8V14H10V7H13M16,17V10H14V17H11L15,21L19,17H16Z"  />
                     </Canvas>
                 </Viewbox>
-                <Button Width="300" Height="72" Background="White" BorderBrush="#FFCCCCCC" Cursor="Hand">
+                <Button Width="300" Height="72" Background="White" BorderBrush="#FFCCCCCC" Cursor="Hand" Click="btnTo_Click">
                     <StackPanel Width="250" Orientation="Horizontal" VerticalAlignment="Center">
                         <Viewbox Width="32" Height="32">
                             <Canvas Width="24" Height="24">
@@ -55,7 +55,7 @@
                         <Grid Width="10"/>
                         <StackPanel>
                             <Label Content="本地同步目录"/>
-                            <Label Content="D:\Sync" Foreground="#FF7F7F7F"/>
+                            <Label Name="lblFrom" Content="D:\Sync" Foreground="#FF7F7F7F"/>
                         </StackPanel>
                     </StackPanel>
                 </Button>

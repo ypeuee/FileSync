@@ -32,7 +32,7 @@
                 <Button x:Name="btn_close" Height="50" Width="35" Style="{StaticResource CloseStyle}" Click="btn_close_Click"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid x:Name="gridMain" Grid.Row="1">
             <views:UcMenu x:Name="ucMenu" HorizontalAlignment="Right" VerticalContentAlignment="Top"/>
             <views:UcScan x:Name="ucScan" Visibility="Hidden"/>
             <views:UcMain x:Name="ucMain"/>

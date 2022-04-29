@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FileSync.Sync.File;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSync
+namespace FileSync.Sync.Same
 {
     /// <summary>
     /// 相同文件查找
     /// </summary>
-    class SameFile
+   public class SameFile
     {
         public void Execute(IConfigurationRoot config)
         {

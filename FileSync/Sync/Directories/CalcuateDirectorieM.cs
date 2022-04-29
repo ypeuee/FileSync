@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSync
+namespace FileSync.Sync.Directories
 {
-    class CalcuateDirectoriesM
+    class CalcuateDirectorieM
     {
         /// <summary>
         /// 源
         /// </summary>
-        public DirectoriesM FromDirectories { get; set; }
+        public DirectorieM FromDirectories { get; set; }
 
         /// <summary>
         /// 目标
         /// </summary>
-        public DirectoriesM ToDirectories { get; set; }
+        public DirectorieM ToDirectories { get; set; }
     }
 }

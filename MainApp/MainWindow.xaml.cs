@@ -1,4 +1,7 @@
-﻿using RadarControl;
+﻿using FileSync.Sync.Directories;
+using FileSync.Sync.File;
+using MainApp.Views;
+using RadarControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +26,7 @@ namespace MainApp
     {
         private Random random = new Random(DateTime.Now.Millisecond);
 
-        public MainWindow()
+        public MainWindow(DirectoriesAll directoriesAll,FileAll fileAll)
         {
             InitializeComponent();
 
@@ -52,6 +55,11 @@ namespace MainApp
             //{
             //    ucScan.Visibility = Visibility.Hidden;
             //};
+
+            ucScan.DirectoriesAll = directoriesAll;
+            ucScan.FileAll = fileAll;
+
+
         }
 
 
