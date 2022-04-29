@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MainApp"
              mc:Ignorable="d" 
-             xmlns:radar="clr-namespace:MainApp.Controls.Radar"
+             xmlns:radar="clr-namespace:MainApp.Controls.Radar" 
+             xmlns:local="clr-namespace:MainApp"
              d:DesignHeight="540" d:DesignWidth="340" Background="White">
     <Grid>
         <Grid.RowDefinitions >
@@ -15,7 +15,7 @@
         <Grid Grid.Row="0">
             <DockPanel>
             <radar:RadarMeter DockPanel.Dock="Left"  Background="White"
-                          Name="meter" MouseDown="meter_MouseDown" ToolTip="点击启动停止"
+                           x:Name="meter" MouseDown="meter_MouseDown" ToolTip="点击启动停止"
                           DialFill="Black" DialStroke="Lime" DialStrokeThickness="5" ScanOpacity="1">
                 <radar:RadarMeter.ScanFill>
                     <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
