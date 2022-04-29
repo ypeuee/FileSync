@@ -2,7 +2,7 @@
 using FileSync.Sync.Directories;
 using FileSync.Sync.File;
 using Microsoft.Extensions.Configuration;
-using RadarControl;
+using MainApp.Controls.Radar;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

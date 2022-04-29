@@ -12,8 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AppControlLibrary\AppControlLibrary.csproj" />
     <ProjectReference Include="..\FileSync\FileSync.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\Radar\RadarChart.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\Radar\RadarMeter.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

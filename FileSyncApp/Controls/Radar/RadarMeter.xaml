@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="MainApp.Controls.Radar.RadarMeter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Storyboard x:Key="scanStory" AutoReverse="False" Completed="Storyboard_Completed">
+            <DoubleAnimation From="0" To="360" Duration="0:0:3" Storyboard.TargetName="ScanAngle" Storyboard.TargetProperty="Angle" />
+        </Storyboard>
+    </UserControl.Resources>
+    <Viewbox>
+        <Grid Width="2000" Height="2000">
+            <Grid.Clip>
+                <EllipseGeometry Center="1000, 1000" RadiusX="1000" RadiusY="1000" />
+            </Grid.Clip>
+            <Ellipse Name="stroke1" Width="2000" Height="2000" Stroke="White" StrokeThickness="10" Fill="Black" />
+            <Ellipse Name="stroke2" Width="1600" Height="1600" Stroke="White" StrokeThickness="10" />
+            <Ellipse Name="stroke3" Width="1200" Height="1200" Stroke="White" StrokeThickness="10" />
+            <Ellipse Name="stroke4" Width="800" Height="800" Stroke="White" StrokeThickness="10" />
+            <Ellipse Name="stroke5" Width="400" Height="400" Stroke="White" StrokeThickness="10" />
+            <Ellipse Name="stroke9" Width="30" Height="30" Stroke="Violet" StrokeThickness="10" />
+            <Line Name="stroke6" X1="1000" Y1="1000" X2="1000" Y2="0" Stroke="White" StrokeThickness="10" />
+            <Line Name="stroke7" X1="1000" Y1="1000" X2="1000" Y2="0" Stroke="White" StrokeThickness="10">
+                <Line.RenderTransform>
+                    <RotateTransform CenterX="1000" CenterY="1000" Angle="120" />
+                </Line.RenderTransform>
+            </Line>
+            <Line Name="stroke8" X1="1000" Y1="1000" X2="1000" Y2="0" Stroke="White" StrokeThickness="10">
+                <Line.RenderTransform>
+                    <RotateTransform CenterX="1000" CenterY="1000" Angle="240" />
+                </Line.RenderTransform>
+            </Line>
+            <Path Name="ScanArea" Data="M 2000,0 A 1000,1000 90 0 0 0,2000 L 1000,1000 Z" StrokeThickness="0" Fill="White" Opacity="0.5">
+                <Path.RenderTransform>
+                    <RotateTransform x:Name="ScanAngle" CenterX="1000" CenterY="1000" Angle="0" />
+                </Path.RenderTransform>
+            </Path>
+            <Grid Name="DotContainer">
+            </Grid>
+        </Grid>
+    </Viewbox>
+</UserControl>

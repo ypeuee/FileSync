@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MainApp"
              mc:Ignorable="d" 
-             xmlns:radar="clr-namespace:RadarControl;assembly=AppControlLibrary"
+             xmlns:radar="clr-namespace:MainApp.Controls.Radar"
              d:DesignHeight="540" d:DesignWidth="340" Background="White">
     <Grid>
         <Grid.RowDefinitions >

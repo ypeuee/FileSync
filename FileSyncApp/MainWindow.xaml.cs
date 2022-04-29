@@ -1,7 +1,7 @@
 ﻿using FileSync.Sync.Directories;
 using FileSync.Sync.File;
 using MainApp.Views;
-using RadarControl;
+using MainApp.Controls.Radar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
