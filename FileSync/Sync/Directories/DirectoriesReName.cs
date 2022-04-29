@@ -50,10 +50,9 @@ namespace FileSync.Sync.Directories
                 //排除源目录已存在
                 var difference = toList.Where(m => !fromList.Contains(m)).ToList();
 
-                foreach (var dif in difference)
-                {
-                    SyncReName(pathTo, actionFile, actionFileProgress, item, dif);
-                }
+
+                SyncReName(pathTo, actionFile, actionFileProgress, item,   difference);
+
             }
 
         }
@@ -66,15 +65,18 @@ namespace FileSync.Sync.Directories
         /// <param name="actionFileProgress"></param>
         /// <param name="item"></param>
         /// <param name="dif"></param>
-        public void SyncReName(string pathTo, Action<SyncType, string> actionFile, Action<SyncType, string, int> actionFileProgress, DirectorieM item, string dif)
+        public void SyncReName(string pathTo, Action<SyncType, string> actionFile, Action<SyncType, string, int> actionFileProgress, DirectorieM item, List<string> difference)
         {
-            Console.WriteLine($"rename {dif} --> {item.FullName}");
-            //当前同步的文件回调
-            actionFile?.Invoke(SyncType.DirReName, item.Name);
+            foreach (var dif in difference)
+            {
+                Console.WriteLine($"rename {dif} --> {item.FullName}");
+                //当前同步的文件回调
+                actionFile?.Invoke(SyncType.DirReName, item.Name);
 
-            Directory.Move(pathTo + dif, pathTo + item.FullName);
-            //当前同步进度回调
-            actionFileProgress?.Invoke(SyncType.DirReName, item.Name, 100);
+                Directory.Move(pathTo + dif, pathTo + item.FullName);
+                //当前同步进度回调
+                actionFileProgress?.Invoke(SyncType.DirReName, item.Name, 100);
+            }
         }
 
         /// <summary>

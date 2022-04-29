@@ -42,7 +42,7 @@ namespace FileSync.Sync.File
         /// <param name="actionFile"></param>
         /// <param name="actionFileProgress"></param>
         /// <param name="tempAdds"></param>
-        private static void SyncAdd(string pathFrom, string pathTo, Action<SyncType, string> actionFile, Action<SyncType, string, int> actionFileProgress, List<FileM> tempAdds)
+        public static void SyncAdd(string pathFrom, string pathTo, Action<SyncType, string> actionFile, Action<SyncType, string, int> actionFileProgress, List<FileM> tempAdds)
         {
             foreach (var item in tempAdds)
             {
@@ -69,7 +69,7 @@ namespace FileSync.Sync.File
         /// <param name="pathFrom"></param>
         /// <param name="pathTo"></param>
         /// <returns></returns>
-        private List<FileM> AddList(string pathFrom, string pathTo)
+        public List<FileM> AddList(string pathFrom, string pathTo)
         {
             var fromFileList = FileLists(pathFrom);
 

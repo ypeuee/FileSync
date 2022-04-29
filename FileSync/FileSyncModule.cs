@@ -23,6 +23,7 @@ namespace FileSync
             Services.AddTransient<DirectoriesAdd>();
             Services.AddTransient<DirectoriesDelete>();
             Services.AddTransient<DirectoriesReName>();
+            Services.AddTransient<DirectoriesAll>();
 
             //File
             Services.AddTransient<FileM>();
@@ -33,6 +34,7 @@ namespace FileSync
             Services.AddTransient<FileReName>();
             Services.AddTransient<FileDelete>();
             Services.AddTransient<FIleUpdate>();
+            Services.AddTransient<FileAll>();
 
             Services.AddTransient<SyncStart>();
             

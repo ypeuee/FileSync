@@ -1,4 +1,6 @@
 ﻿using FileSync;
+using FileSync.Sync.Directories;
+using FileSync.Sync.File;
 using Microsoft.Extensions.Configuration;
 using RadarControl;
 using System;
@@ -22,6 +24,10 @@ namespace MainApp.Views
         {
             InitializeComponent();
         }
+
+        public DirectoriesAll DirectoriesAll { get; set; }
+        public FileAll FileAll { get; set; }
+
 
         /// <summary>
         /// 扫描结束事件
@@ -93,50 +99,66 @@ namespace MainApp.Views
             }
 
             //线程执行      
-            Task task = Task.Factory.StartNew(() =>
+            Task task = Task.Factory.StartNew(
+                    //new Action<string, string>((pathTo, pathFrom)
+                    () =>
              {
-                 var dirSync = new DirectoriesSync();
-                 var fileSync = new FileSync.FileSync();
+                 ////只计算
+                 //var dirReNameList = DirectoriesAll.DirectoriesReName.ReNameList(pathFrom, pathTo);
+
+                 ////文件
+                 //var fileAddList = FileAll.FileAdd.AddList(pathFrom, pathTo);
+                 //var fileUpdList = FileAll.FIleUpdate.UpdateList(pathFrom, pathTo);
+                 //var fileDelList = FileAll.FileDelete.DeleteList(pathFrom, pathTo);
+                 ////文件夹
+                 //var dirAddList = DirectoriesAll.DirectoriesAdd.AddList(pathFrom, pathTo);
+                 ////var dirDelList = DirectoriesAll.DirectoriesDelete.DeleteList(pathFrom, pathTo);
+
+
+                 //var dirSync = new DirectoriesSync();
+                 //var fileSync = new FileSync.FileSync();
 
                  //只计算
                  bool isExecute = false;
 
 
-                 dirSync.DirectoriesReName(pathFrom, pathTo
+                 DirectoriesAll.DirectoriesReName.SyncReName(pathFrom, pathTo
                     , isExecute, ActionFileList);
 
                  //文件
-                 fileSync.CopyAddFile(pathFrom, pathTo
+                 FileAll.FileAdd.SyncAdd(pathFrom, pathTo
                       , isExecute, ActionFileList);
-                 fileSync.CopyUpdFile(pathFrom, pathTo
+                 FileAll.FIleUpdate.SyncUpdate(pathFrom, pathTo
                     , isExecute, ActionFileList);
-                 fileSync.CopyDelFile(pathFrom, pathTo
+                 FileAll.FileDelete.SyncDelete(pathFrom, pathTo
                      , isExecute, ActionFileList);
                  //文件夹
-                 dirSync.CopyAddDirectories(pathFrom, pathTo
+                 DirectoriesAll.DirectoriesAdd.SyncAdd(pathFrom, pathTo
                       , isExecute, ActionFileList);
-                 dirSync.CopyDelDirectories(pathFrom, pathTo
+                 DirectoriesAll.DirectoriesDelete.SyncDelete(pathFrom, pathTo
                   , isExecute, ActionFileList);
 
                  //执行
                  isExecute = true;
-                 dirSync.DirectoriesReName(pathFrom, pathTo
+                 DirectoriesAll.DirectoriesReName.SyncReName(pathFrom, pathTo
                    , actionFileProgress: ActionFileProgress);
 
                  //文件
-                 fileSync.CopyAddFile(pathFrom, pathTo
+                 FileAll.FileAdd.SyncAdd(pathFrom, pathTo
                      , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
-                 fileSync.CopyUpdFile(pathFrom, pathTo
+                 FileAll.FIleUpdate.SyncUpdate(pathFrom, pathTo
                     , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
-                 fileSync.CopyDelFile(pathFrom, pathTo
+                 FileAll.FileDelete.SyncDelete(pathFrom, pathTo
                      , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
                  //文件夹
-                 dirSync.CopyAddDirectories(pathFrom, pathTo
+                 DirectoriesAll.DirectoriesAdd.SyncAdd(pathFrom, pathTo
                        , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
-                 dirSync.CopyDelDirectories(pathFrom, pathTo
+                 DirectoriesAll.DirectoriesDelete.SyncDelete(pathFrom, pathTo
                   , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
 
-             });
+             }
+             //), pathTo, pathFrom
+                );
 
             task.ContinueWith((obj) =>
             {
