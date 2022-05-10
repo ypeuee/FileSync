@@ -1,4 +1,5 @@
 ﻿using FileSync;
+using FIleSyncData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -35,7 +36,8 @@ namespace MainApp
                    //services.AddHostedService<StartupService>();
                    services.AddApplication<FileSyncModule>(hostingContext.Configuration);
                    services.AddSingleton<MainWindow>();
-
+                   services.AddData<FIleSyncDataModule>(hostingContext.Configuration);
+                   
                    //注入弹性数据库
                    //services.AddData<ElasticDatabaseModule>(hostingContext.Configuration);
                });

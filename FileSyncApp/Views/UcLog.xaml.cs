@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIleSyncData;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
@@ -36,6 +37,8 @@ namespace MainApp.Views
             }
         }
 
+        public TM_PickingGridDAL dal { get; set; }
+
         /// <summary>
         /// 清空历史记录
         /// </summary>
@@ -47,8 +50,12 @@ namespace MainApp.Views
             TreeViewOrg.Visibility = Visibility.Hidden;
 
             LblMsg.Content = $"{(CbxError.IsChecked == true ? "错误" : "历史")}历史记录为空";
+
+            var v = dal.Query();
+
+
         }
-         
+
         /// <summary>
         /// 显示错误记录
         /// </summary>

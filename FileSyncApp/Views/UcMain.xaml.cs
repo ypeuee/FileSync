@@ -1,4 +1,5 @@
-﻿using MainApp.Tools;
+﻿using FIleSyncData;
+using MainApp.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -72,7 +73,7 @@ namespace MainApp.Views
         {
             //历史记录容器跟随
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-            var logView = new LogWindow();
+            var logView = new LogWindow(new TM_PickingGridDAL());
             logView.Show();
             logView.Left = mainWindow.Left + mainWindow.Width + 5;
             logView.Top = mainWindow.Top;

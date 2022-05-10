@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FIleSyncData\FIleSyncData.csproj" />
     <ProjectReference Include="..\FileSync\FileSync.csproj" />
   </ItemGroup>
 

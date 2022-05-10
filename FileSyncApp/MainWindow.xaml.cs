@@ -26,7 +26,7 @@ namespace MainApp
     {
         private Random random = new Random(DateTime.Now.Millisecond);
 
-        public MainWindow(DirectoriesAll directoriesAll,FileAll fileAll)
+        public MainWindow(DirectoriesAll directoriesAll, FileAll fileAll)
         {
             InitializeComponent();
 

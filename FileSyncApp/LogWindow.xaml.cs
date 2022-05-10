@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIleSyncData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,16 +21,13 @@ namespace MainApp
     /// </summary>
     public partial class LogWindow : BaseWindow
     {
-        public LogWindow()
+        TM_PickingGridDAL dal;
+        public LogWindow(TM_PickingGridDAL dal)
         {
             InitializeComponent();
+            this.dal = dal;
 
-        }
-
-        public LogWindow(double top, double left):this()
-        {
-            Top = top;
-            Left = left;
+            ucLog.dal = dal;
         }
 
 

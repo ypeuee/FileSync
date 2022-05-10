@@ -24,7 +24,7 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <views:UcLog/>
+            <views:UcLog x:Name="ucLog"/>
 
         </Grid>
     </Grid>
