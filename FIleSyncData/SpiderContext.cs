@@ -1,36 +1,12 @@
-﻿using System.Data.Entity;
-using System.Diagnostics;
-using FIleSyncData.Models;
-
+﻿
 namespace FIleSyncData
 {
-    public class SqlitedContext : DbContext
+    public class SqlitedContext  
     {
-        /// <summary>
-        /// 用指定的数据库连接枚举创建MasterContext对像 
-        /// </summary>
-
-        public SqlitedContext() :
-            base(new System.Data.SQLite.SQLiteConnection("data source=Cloud.ClientApp.db3"),true)
+        public static System.Data.SQLite.SQLiteConnection NewConnection()
         {
-#if DEBUG
-            base.Database.Log = (info) =>
-            {
-                Debug.WriteLine(info);
-            };
-#endif
+            return new System.Data.SQLite.SQLiteConnection("Data Source=Cloud.ClientApp.db3;Version = 3");
         }
-     
-        /// <summary>
-        /// 摘果机工位信息
-        /// </summary>
-        public virtual DbSet<TM_PickingAreaM> TM_PickingArea { get; set; }
-
-
-        /// <summary>
-        /// 摘果机格子信息
-        /// </summary>
-        public virtual DbSet<TM_PickingGridM> TM_PickingGrid { get; set; }
-
+  
     }
 }

@@ -21,8 +21,8 @@ namespace MainApp
     /// </summary>
     public partial class LogWindow : BaseWindow
     {
-        TM_PickingGridDAL dal;
-        public LogWindow(TM_PickingGridDAL dal)
+        SyncLogDAL dal;
+        public LogWindow(SyncLogDAL dal)
         {
             InitializeComponent();
             this.dal = dal;

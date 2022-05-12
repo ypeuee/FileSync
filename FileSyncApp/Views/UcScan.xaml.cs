@@ -192,7 +192,7 @@ namespace MainApp.Views
         /// 同步结束
         /// </summary>
         void End()
-        {
+        {        
             FileTotalNum = 0;
             FIleIndex = 0;
             ShowNum("100");
@@ -238,6 +238,20 @@ namespace MainApp.Views
                 value = 100;
             ShowNum(value.ToString());
             System.Threading.Thread.Sleep(500);
+
+            var log = new FIleSyncData.Models.SyncLogM() {
+            Name=file,
+            Extension="",
+                FullName=file,
+                Path=file,
+                TypeName="File",
+                CreateTime=DateTime.Now,
+                LastWriteTime=DateTime.Now,
+                FilOperation="1",
+                LogMsg="",
+                LogTime=DateTime.Now 
+            };
+            new FIleSyncData.SyncLogDAL().InsLog(log);
         }
 
         void AddSignal(SyncType syncType, string path)

@@ -73,7 +73,7 @@ namespace MainApp.Views
         {
             //历史记录容器跟随
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-            var logView = new LogWindow(new TM_PickingGridDAL());
+            var logView = new LogWindow(new SyncLogDAL());
             logView.Show();
             logView.Left = mainWindow.Left + mainWindow.Width + 5;
             logView.Top = mainWindow.Top;

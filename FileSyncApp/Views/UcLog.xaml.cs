@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Linq;
 
 namespace MainApp.Views
 {
@@ -23,9 +24,34 @@ namespace MainApp.Views
         //初始化显示和历史记录
         private void InitData()
         {
-            TreeViewOrg.ItemsSource = TreeviewDataInit.Instance.OrgList;
+            var list=new FIleSyncData.SyncLogDAL().Query();
+            var OrgList = new ObservableCollection<OrgModel>();
 
-            if (TreeviewDataInit.Instance.OrgList.Count == 0)
+            if(list!=null)
+            foreach (var item in list.GroupBy(m => m.LogDate))
+            {
+                var model = new OrgModel()
+                {
+                    //IsGrouping = true,
+                    DisplayName = $"同步于{item.Key}",
+                    Children = new ObservableCollection<OrgModel>()
+                };
+                foreach (var i in item)
+                {
+                    model.Children.Add(new OrgModel()
+                    {
+                        SurName =i.Name,
+                        Name = i.Name,
+                        Info = i.Path,
+                        Count = 1
+                    });
+                }             
+
+                OrgList.Add(model);
+            }
+            TreeViewOrg.ItemsSource = OrgList;// TreeviewDataInit.Instance.OrgList;
+
+            if (OrgList.Count == 0)
             {
                 StackPanel1.Visibility = Visibility.Visible;
                 TreeViewOrg.Visibility = Visibility.Hidden;
@@ -37,7 +63,7 @@ namespace MainApp.Views
             }
         }
 
-        public TM_PickingGridDAL dal { get; set; }
+        public SyncLogDAL dal { get; set; }
 
         /// <summary>
         /// 清空历史记录
@@ -51,8 +77,7 @@ namespace MainApp.Views
 
             LblMsg.Content = $"{(CbxError.IsChecked == true ? "错误" : "历史")}历史记录为空";
 
-            var v = dal.Query();
-
+            dal.Delete();
 
         }
 

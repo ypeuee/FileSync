@@ -27,8 +27,7 @@ namespace FIleSyncData
 
             //SqlitedContext
             Services.AddTransient<SqlitedContext>();
-            Services.AddTransient<TM_PickingAreaDAL>();
-            Services.AddTransient<TM_PickingGridDAL>();
+            Services.AddTransient<SyncLogDAL>();
  
             // 注册数据库会话工厂
             //Services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();            
