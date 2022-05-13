@@ -66,7 +66,7 @@ namespace FileSync.Sync.File
 
                 System.IO.File.Delete(pathTo + item.FullName);
                 //当前同步进度回调
-                actionFileProgress?.Invoke(SyncType.FileDel, item.Name, 100);
+                actionFileProgress?.Invoke(SyncType.FileDel, pathTo + item.FullName, 100);
             }
         }
 

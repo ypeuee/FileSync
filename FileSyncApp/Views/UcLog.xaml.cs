@@ -37,14 +37,14 @@ namespace MainApp.Views
                     Children = new ObservableCollection<OrgModel>()
                 };
                 foreach (var i in item)
-                {
-                    model.Children.Add(new OrgModel()
-                    {
-                        SurName =i.Name,
-                        Name = i.Name,
-                        Info = i.Path,
-                        Count = 1
-                    });
+               {
+                        model.Children.Add(new OrgModel()
+                        {
+                            SurName = i.Extension.ToLower(),
+                            Name = i.Name,
+                            Info = i.Path,
+                            Count = i.LogTime.ToString("T")
+                        }); ;
                 }             
 
                 OrgList.Add(model);
@@ -90,6 +90,21 @@ namespace MainApp.Views
         {
             LblMsg.Content = $"{(CbxError.IsChecked == true ? "错误" : "历史")}历史记录为空";
         }
+
+        string GetExtension(string path, int num = 0)
+        {
+            int index = path.LastIndexOf(".");
+            if (index < 0)
+                return string.Empty;
+            string extenstion = path.Substring(index, path.Length - index );
+
+            if (num < 1)
+                return extenstion;
+            if (extenstion.Length < num)
+                return extenstion;
+
+            return extenstion.Substring(0, num);
+        }
     }
 
 
@@ -121,21 +136,21 @@ namespace MainApp.Views
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
                         },
                             new OrgModel(){
                             //IsGrouping=false,
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
                         },
                             new OrgModel(){
                             //IsGrouping=false,
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
 
                     },
                             new OrgModel(){
@@ -143,7 +158,7 @@ namespace MainApp.Views
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
                     },
                 },
                 },
@@ -158,21 +173,21 @@ namespace MainApp.Views
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
                         },
                             new OrgModel(){
                             //IsGrouping=false,
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
                         },
                             new OrgModel(){
                             //IsGrouping=false,
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
 
                     },
                             new OrgModel(){
@@ -180,7 +195,7 @@ namespace MainApp.Views
                             SurName="刘",
                             Name="刘棒",
                             Info="我要走向天空！",
-                            Count=3
+                            Count="1"
                     },
                 },
                 }
@@ -199,7 +214,7 @@ namespace MainApp.Views
         public string SurName { get; set; }
         public string Name { get; set; }
         public string Info { get; set; }
-        public int Count { get; set; }
+        public string Count { get; set; }
     }
 
     public class BoolToVisible : IValueConverter

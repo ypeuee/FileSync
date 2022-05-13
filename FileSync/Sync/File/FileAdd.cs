@@ -59,7 +59,7 @@ namespace FileSync.Sync.File
                 System.IO.File.Copy(pathFrom + item.FullName, toFile);
 
                 //当前同步进度回调
-                actionFileProgress?.Invoke(SyncType.FileAdd, item.FullName, 100);
+                actionFileProgress?.Invoke(SyncType.FileAdd, pathFrom + item.FullName, 100);
             }
         }
 

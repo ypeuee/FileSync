@@ -103,27 +103,8 @@ namespace MainApp.Views
                     //new Action<string, string>((pathTo, pathFrom)
                     () =>
              {
-                 ////只计算
-                 //var dirReNameList = DirectoriesAll.DirectoriesReName.ReNameList(pathFrom, pathTo);
-
-                 ////文件
-                 //var fileAddList = FileAll.FileAdd.AddList(pathFrom, pathTo);
-                 //var fileUpdList = FileAll.FIleUpdate.UpdateList(pathFrom, pathTo);
-                 //var fileDelList = FileAll.FileDelete.DeleteList(pathFrom, pathTo);
-                 ////文件夹
-                 //var dirAddList = DirectoriesAll.DirectoriesAdd.AddList(pathFrom, pathTo);
-                 ////var dirDelList = DirectoriesAll.DirectoriesDelete.DeleteList(pathFrom, pathTo);
-
-
-                 //var dirSync = new DirectoriesSync();
-                 //var fileSync = new FileSync.FileSync();
-
                  //只计算
                  bool isExecute = false;
-
-
-                 DirectoriesAll.DirectoriesReName.SyncReName(pathFrom, pathTo
-                    , isExecute, ActionFileList);
 
                  //文件
                  FileAll.FileAdd.SyncAdd(pathFrom, pathTo
@@ -132,16 +113,10 @@ namespace MainApp.Views
                     , isExecute, ActionFileList);
                  FileAll.FileDelete.SyncDelete(pathFrom, pathTo
                      , isExecute, ActionFileList);
-                 //文件夹
-                 DirectoriesAll.DirectoriesAdd.SyncAdd(pathFrom, pathTo
-                      , isExecute, ActionFileList);
-                 DirectoriesAll.DirectoriesDelete.SyncDelete(pathFrom, pathTo
-                  , isExecute, ActionFileList);
 
                  //执行
                  isExecute = true;
-                 DirectoriesAll.DirectoriesReName.SyncReName(pathFrom, pathTo
-                   , actionFileProgress: ActionFileProgress);
+                 DirectoriesAll.DirectoriesReName.SyncReName(pathFrom, pathTo);
 
                  //文件
                  FileAll.FileAdd.SyncAdd(pathFrom, pathTo
@@ -151,13 +126,10 @@ namespace MainApp.Views
                  FileAll.FileDelete.SyncDelete(pathFrom, pathTo
                      , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
                  //文件夹
-                 DirectoriesAll.DirectoriesAdd.SyncAdd(pathFrom, pathTo
-                       , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
-                 DirectoriesAll.DirectoriesDelete.SyncDelete(pathFrom, pathTo
-                  , actionFile: ActionFile, actionFileProgress: ActionFileProgress);
+                 DirectoriesAll.DirectoriesAdd.SyncAdd(pathFrom, pathTo);
+                 DirectoriesAll.DirectoriesDelete.SyncDelete(pathFrom, pathTo);
 
              }
-             //), pathTo, pathFrom
                 );
 
             task.ContinueWith((obj) =>
@@ -192,7 +164,7 @@ namespace MainApp.Views
         /// 同步结束
         /// </summary>
         void End()
-        {        
+        {
             FileTotalNum = 0;
             FIleIndex = 0;
             ShowNum("100");
@@ -239,17 +211,18 @@ namespace MainApp.Views
             ShowNum(value.ToString());
             System.Threading.Thread.Sleep(500);
 
-            var log = new FIleSyncData.Models.SyncLogM() {
-            Name=file,
-            Extension="",
-                FullName=file,
-                Path=file,
-                TypeName="File",
-                CreateTime=DateTime.Now,
-                LastWriteTime=DateTime.Now,
-                FilOperation="1",
-                LogMsg="",
-                LogTime=DateTime.Now 
+            var log = new FIleSyncData.Models.SyncLogM()
+            {
+                Name = GetFileName(file),
+                Extension = GetExtension(file),
+                FullName = file,
+                Path = GetFilePath(file),
+                TypeName = "File",
+                CreateTime = DateTime.Now,
+                LastWriteTime = DateTime.Now,
+                FilOperation = "1",
+                LogMsg = "",
+                LogTime = DateTime.Now
             };
             new FIleSyncData.SyncLogDAL().InsLog(log);
         }
@@ -337,5 +310,38 @@ namespace MainApp.Views
                 lblNum.Dispatcher.Invoke(new Action<string>((m) => ShowNum(m)), value);
         }
 
+        string GetExtension(string path, int num = 0)
+        {
+            int index = path.LastIndexOf(".");
+            if (index < 1)
+                return string.Empty;
+            string extenstion = path.Substring(index, path.Length - index);
+
+            if (num < 1)
+                return extenstion;
+            if (extenstion.Length < num)
+                return extenstion;
+
+            return extenstion.Substring(0, num);
+        }
+
+        string GetFileName(string path)
+        {
+            int index = path.LastIndexOf("\\");
+            if (index < 1)
+                return string.Empty;
+            index++;//去最后一个\
+            string extenstion = path.Substring(index, path.Length - index);
+            return extenstion;
+        }
+
+        string GetFilePath(string path)
+        {
+            int index = path.LastIndexOf("\\");
+            if (index < 1)
+                return string.Empty;
+            string extenstion = path.Substring(0, index);
+            return extenstion;
+        }
     }
 }

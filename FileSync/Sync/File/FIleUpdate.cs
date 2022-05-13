@@ -57,7 +57,7 @@ namespace FileSync.Sync.File
                 actionFile?.Invoke(SyncType.FileUpd, item.ToFile.Name);
                 System.IO.File.Copy(pathFrom + item.FromFile.FullName, pathTo + item.ToFile.FullName, true);
                 //当前同步进度回调
-                actionFileProgress?.Invoke(SyncType.FileUpd, item.ToFile.Name, 100);
+                actionFileProgress?.Invoke(SyncType.FileUpd, pathFrom + item.FromFile.FullName, 100);
             }
         }
 

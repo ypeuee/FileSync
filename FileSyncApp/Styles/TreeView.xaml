@@ -15,7 +15,7 @@
                     </Border>
                     <TextBlock Text="{Binding Name}" Margin="50 7 0 0" FontSize="13"/>
                     <TextBlock Text="{Binding Info}" Foreground="#FF7F7F7F" Margin="50 30 0 0"/>
-                    <TextBlock Text="{Binding Count,StringFormat={}{0}人}" Foreground="#FF989898" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                    <TextBlock Text="{Binding Count,StringFormat={}{0}}" Foreground="#FF989898" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 7 5 0"/>
                 </Grid>
             </Grid>
             <StackPanel MinHeight="25" x:Name="groupinginfo" Orientation="Horizontal" Background="Transparent" HorizontalAlignment="Left" Visibility="{Binding IsGrouping,Converter={StaticResource boolToVisible}}">
