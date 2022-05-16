@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Linq;
+using FileSyncApp.Controls.Convers;
+using MainApp.Tools;
 
 namespace MainApp.Views
 {
@@ -18,36 +20,41 @@ namespace MainApp.Views
         {
             InitializeComponent();
 
-            InitData();
+            InitData(CbxError.IsChecked == true);
         }
 
-        //初始化显示和历史记录
-        private void InitData()
-        {
-            var list=new FIleSyncData.SyncLogDAL().Query();
-            var OrgList = new ObservableCollection<OrgModel>();
 
-            if(list!=null)
-            foreach (var item in list.GroupBy(m => m.LogDate))
+        
+
+        //初始化显示和历史记录
+        private void InitData(bool isFailure )
+        {
+            var list = new FIleSyncData.SyncLogDAL().Query(isFailure);
+            var OrgList = new ObservableCollection<TreeViewModel>();
+
+            if (list != null)
             {
-                var model = new OrgModel()
+                foreach (var item in list.GroupBy(m => m.LogDate))
                 {
-                    //IsGrouping = true,
-                    DisplayName = $"同步于{item.Key}",
-                    Children = new ObservableCollection<OrgModel>()
-                };
-                foreach (var i in item)
-               {
-                        model.Children.Add(new OrgModel()
+                    var model = new TreeViewModel()
+                    {
+                        //IsGrouping = true,
+                        DisplayName = $"同步于{item.Key}",
+                        Children = new ObservableCollection<TreeViewModel>()
+                    };
+                    foreach (var i in item)
+                    {
+                        model.Children.Add(new TreeViewModel()
                         {
                             SurName = i.Extension.ToLower(),
                             Name = i.Name,
-                            Info = i.Path,
-                            Count = i.LogTime.ToString("T")
+                            Path = i.Path,
+                            Date = i.LogTime.ToString("T")
                         }); ;
-                }             
+                    }
 
-                OrgList.Add(model);
+                    OrgList.Add(model);
+                }
             }
             TreeViewOrg.ItemsSource = OrgList;// TreeviewDataInit.Instance.OrgList;
 
@@ -89,6 +96,8 @@ namespace MainApp.Views
         private void CbxError_Click(object sender, RoutedEventArgs e)
         {
             LblMsg.Content = $"{(CbxError.IsChecked == true ? "错误" : "历史")}历史记录为空";
+
+            InitData(CbxError.IsChecked==true);
         }
 
         string GetExtension(string path, int num = 0)
@@ -96,7 +105,7 @@ namespace MainApp.Views
             int index = path.LastIndexOf(".");
             if (index < 0)
                 return string.Empty;
-            string extenstion = path.Substring(index, path.Length - index );
+            string extenstion = path.Substring(index, path.Length - index);
 
             if (num < 1)
                 return extenstion;
@@ -105,117 +114,24 @@ namespace MainApp.Views
 
             return extenstion.Substring(0, num);
         }
-    }
 
-
-    public class TreeviewDataInit
-    {
-        private static TreeviewDataInit dataInit;
-
-        public static TreeviewDataInit Instance
+     
+        private void TreeViewOrg_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            get
+            if (e.ClickCount != 2)
             {
-                if (dataInit == null)
-                    dataInit = new TreeviewDataInit();
-                return dataInit;
+                return;
+            }
+            if (null != TreeViewOrg.SelectedItem)
+            {
+                var model = TreeViewOrg.SelectedItem as TreeViewModel;
+
+                Open.OpenDir(model.Path);
             }
         }
-        private TreeviewDataInit()
-        {
-            OrgList = new ObservableCollection<OrgModel>()
-            {
-                new OrgModel()
-                {
-                    //IsGrouping = true,
-                    DisplayName = "同步于2022/4/8 14:59:38",
-                    Children = new ObservableCollection<OrgModel>()
-                    {
-                        new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-                        },
-                            new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-                        },
-                            new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-
-                    },
-                            new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-                    },
-                },
-                },
-                new OrgModel()
-                {
-                    //IsGrouping = true,
-                    DisplayName = "同步于2022/4/8 14:59:38",
-                    Children = new ObservableCollection<OrgModel>()
-                    {
-                        new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-                        },
-                            new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-                        },
-                            new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-
-                    },
-                            new OrgModel(){
-                            //IsGrouping=false,
-                            SurName="刘",
-                            Name="刘棒",
-                            Info="我要走向天空！",
-                            Count="1"
-                    },
-                },
-                }
-            };
-        }
-
-        public ObservableCollection<OrgModel> OrgList { get; set; }
-
     }
 
-    public class OrgModel
-    {
-        public bool IsGrouping { get { return Children != null && Children.Count > 0; } }
-        public ObservableCollection<OrgModel> Children { get; set; }
-        public string DisplayName { get; set; }
-        public string SurName { get; set; }
-        public string Name { get; set; }
-        public string Info { get; set; }
-        public string Count { get; set; }
-    }
+
 
     public class BoolToVisible : IValueConverter
     {

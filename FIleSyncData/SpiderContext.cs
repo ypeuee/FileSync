@@ -5,7 +5,7 @@ namespace FIleSyncData
     {
         public static System.Data.SQLite.SQLiteConnection NewConnection()
         {
-            return new System.Data.SQLite.SQLiteConnection("Data Source=Cloud.ClientApp.db3;Version = 3");
+            return new System.Data.SQLite.SQLiteConnection("Data Source=LoadDatabase.db3;Version = 3");
         }
   
     }

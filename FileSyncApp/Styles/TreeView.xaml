@@ -14,8 +14,22 @@
                         <TextBlock Text="{Binding SurName}" FontSize="23" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                     <TextBlock Text="{Binding Name}" Margin="50 7 0 0" FontSize="13"/>
-                    <TextBlock Text="{Binding Info}" Foreground="#FF7F7F7F" Margin="50 30 0 0"/>
-                    <TextBlock Text="{Binding Count,StringFormat={}{0}}" Foreground="#FF989898" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 7 5 0"/>
+                    <TextBlock Text="{Binding Path}" Margin="50 30 0 0">
+                        <TextBlock.Style>
+                            <!--路径样式 鼠标进入变手型和下划线-->
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Foreground" Value="#FF7F7F7F"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                                        <Setter Property="TextBlock.Cursor" Value="Hand" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Date,StringFormat={}{0}}" Foreground="#FF989898" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 7 5 0" />
                 </Grid>
             </Grid>
             <StackPanel MinHeight="25" x:Name="groupinginfo" Orientation="Horizontal" Background="Transparent" HorizontalAlignment="Left" Visibility="{Binding IsGrouping,Converter={StaticResource boolToVisible}}">
@@ -154,5 +168,15 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+    <!--路径样式 鼠标进入变手型和下划线-->
+    <Style x:Key="PathStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                <Setter Property="TextBlock.Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

@@ -53,13 +53,15 @@ values
         /// <summary>
         /// 查询全部记录
         /// </summary>
+        /// <param name="isFailure">true失败的日志，默认 false 查找全部</param>
         /// <returns></returns>
-        public List<SyncLogM> Query()
+        public List<SyncLogM> Query(bool isFailure = true)
         {
-            string sql =
-@"
-select * from synclog
-";
+            string sql;
+            if (isFailure)
+                sql = @"select * from synclog where logMsg !='';";
+            else
+                sql = @"select * from synclog";
 
             try
             {
@@ -78,7 +80,7 @@ select * from synclog
         }
 
 
-            /// <summary>
+        /// <summary>
         /// 查询全部记录
         /// </summary>
         /// <returns></returns>
