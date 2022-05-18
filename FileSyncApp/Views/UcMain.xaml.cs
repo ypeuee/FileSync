@@ -29,28 +29,38 @@ namespace MainApp.Views
             InitializeComponent();
 
             BindPath();
+
+            #region 开始按钮改变格式
+            btnStart.MouseEnter += (sender, e) =>
+              {
+                  pathStop.Visibility = Visibility.Hidden;
+                  pathStart.Visibility = Visibility.Visible;
+              };
+            btnStart.MouseLeave += (sender, e) =>
+              {
+                  pathStop.Visibility = Visibility.Visible;
+                  pathStart.Visibility = Visibility.Hidden;
+              };
+            #endregion
+
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 10);
+            timer.Tick += (sender, e) =>
+            {
+                RunScan(sender, null);
+            };
+            timer.Start();
+
         }
+
+        bool timeIsRun = false;
+        System.Windows.Threading.DispatcherTimer timer = null;
 
         /// <summary>
         /// 单击打开按钮
         /// </summary>
         [Category("Behavior")]
         public event RoutedEventHandler StartClick;
-
-        #region 开始按钮改变格式
-        private void btnStart_MouseEnter(object sender, MouseEventArgs e)
-        {
-            pathStop.Visibility = Visibility.Hidden;
-            pathStart.Visibility = Visibility.Visible;
-        }
-        private void btnStart_MouseLeave(object sender, MouseEventArgs e)
-        {
-            pathStop.Visibility = Visibility.Visible;
-            pathStart.Visibility = Visibility.Hidden;
-        }
-        #endregion
-
-
 
         /// <summary>
         /// 开始按钮事件
@@ -59,10 +69,19 @@ namespace MainApp.Views
         /// <param name="e"></param>
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            if (StartClick != null)
-                StartClick(sender, e);
+            RunScan(sender, e);
         }
 
+        void RunScan(object sender, RoutedEventArgs e)
+        {
+            if (timeIsRun == true) return;        
+            timeIsRun = true;
+
+            if (StartClick != null)
+                StartClick(sender, e);
+
+            timeIsRun = false;
+        }
 
         /// <summary>
         /// 打开历史记录窗口
@@ -120,5 +139,7 @@ namespace MainApp.Views
             lblFrom.Content = FileSync.ConfigurationFile.Configuration["FileSync:PathFrom"];
             lblTo.Content = FileSync.ConfigurationFile.Configuration["FileSync:PathTo"];
         }
+
+
     }
 }

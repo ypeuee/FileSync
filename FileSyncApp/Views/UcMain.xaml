@@ -23,7 +23,7 @@
                 </Viewbox>
                 <Label Content="您的文件已是最新" FontSize="16" HorizontalAlignment="Center"/>
                 <Label Content="上次同步于1小时前无目录文件更新" Foreground="#FF7F7F7F" HorizontalAlignment="Center" />
-                <Button Content="开始同步"  Width="90" Height="23" Style="{StaticResource StartStyle}" Click="btnStart_Click"  MouseEnter="btnStart_MouseEnter" MouseLeave="btnStart_MouseLeave" />
+                <Button Content="开始同步" Name="btnStart"  Width="90" Height="23" Style="{StaticResource StartStyle}" Click="btnStart_Click" />
             </StackPanel>
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="400">
                 <Button Width="300"  Height="72" Background="White" BorderBrush="#FFCCCCCC" Cursor="Hand" Click="btnFrom_Click">

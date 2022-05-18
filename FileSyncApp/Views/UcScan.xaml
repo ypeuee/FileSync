@@ -12,7 +12,7 @@
         <DockPanel Margin="0,40,0,0" Height="300" VerticalAlignment="Top">
             <radar:RadarMeter DockPanel.Dock="Left" Width="300" 
                           x:Name="meter" 
-                          MouseDown="meter_MouseDown" 
+                          MouseDown="meter_MouseDown"                              
                           DialFill="White" DialStroke="#FF009CFE" DialStrokeThickness="1" ScanOpacity="1">
                 <radar:RadarMeter.ScanFill>
                     <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">

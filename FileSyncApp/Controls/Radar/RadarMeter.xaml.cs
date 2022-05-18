@@ -40,7 +40,7 @@ namespace MainApp.Controls.Radar
         /// <summary>
         /// 雷达扫描最近距离
         /// </summary>
-        private static double minDistance = 0.0;
+        private static double minDistance = 50.0;
         /// <summary>
         /// 获取雷达扫描最近距离
         /// </summary>
@@ -52,7 +52,7 @@ namespace MainApp.Controls.Radar
         /// <summary>
         /// 雷达扫描最远距离
         /// </summary>
-        private static double maxDistance = 1000.0;
+        private static double maxDistance = 300.0;
         /// <summary>
         /// 获取或设置雷达扫描最远距离
         /// </summary>

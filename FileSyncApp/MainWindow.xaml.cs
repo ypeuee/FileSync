@@ -23,9 +23,7 @@ namespace MainApp
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : BaseWindow
-    {
-        private Random random = new Random(DateTime.Now.Millisecond);
-
+    {  
         public MainWindow(DirectoriesAll directoriesAll, FileAll fileAll)
         {
             InitializeComponent();
@@ -58,8 +56,6 @@ namespace MainApp
 
             ucScan.DirectoriesAll = directoriesAll;
             ucScan.FileAll = fileAll;
-
-
         }
 
 

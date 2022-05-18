@@ -209,7 +209,7 @@ namespace MainApp.Views
             if (value > 100)
                 value = 100;
             ShowNum(value.ToString());
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(500);   
 
             var log = new FIleSyncData.Models.SyncLogM()
             {
@@ -259,11 +259,10 @@ namespace MainApp.Views
             //添加信号源
             meter.Dispatcher.Invoke(new Action<string, Color>((p, c) =>
             {
-                Random random = new Random(DateTime.Now.Millisecond);
-                RadarSignal rs = new RadarSignal(30, new SolidColorBrush(color),
-                  random.Next((int)RadarMeter.MinDistance,
-                  (int)RadarMeter.MaxDistance + 1),
-                  random.Next(0, 300))
+                Random random = new Random();
+                RadarSignal rs = new RadarSignal(random.Next(25, 50), new SolidColorBrush(color),
+                  random.Next((int)RadarMeter.MinDistance, (int)RadarMeter.MaxDistance -10),
+                  random.Next(1, 360))
                 { ToolTip = path };
                 meter.SignalCollection.Add(rs);
             }), path, color);
