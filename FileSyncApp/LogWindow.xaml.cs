@@ -58,7 +58,7 @@ namespace MainApp
             if (mainWindow == null)
             {
                 //历史记录容器跟随
-                 mainWindow = (MainWindow)Application.Current.MainWindow;
+                mainWindow = (MainWindow)Application.Current.MainWindow;
             }
             if (logWindow == null)
             {
@@ -84,9 +84,41 @@ namespace MainApp
             }
         }
 
+        static bool isLoadLogs = false;
+        /// <summary>
+        /// 刷新同步记录
+        /// </summary>
+        public static void LoadLogs()
+        {
+            if (isLoadLogs)
+                return;
 
+            if (logWindow == null)
+                return;
 
-
-
+            isLoadLogs = true;
+            try
+            {
+                if (logWindow.CheckAccess())
+                {
+                    logWindow.ucLog.LoadLogs();
+                }
+                else
+                {
+                    logWindow.Dispatcher.Invoke(new Action(() =>
+                    {
+                        logWindow.ucLog.LoadLogs();
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                //throw;
+            }
+           
+            isLoadLogs = false;
+        }
+         
     }
 }

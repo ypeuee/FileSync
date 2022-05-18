@@ -33,7 +33,7 @@ namespace MainApp.Views
         /// 扫描结束事件
         /// </summary>
         [Category("Behavior")]
-        public event Action<string, bool> StopClick;
+        public event Action<string, bool> ScanEnd;
 
 
         private void meter_MouseDown(object sender, MouseButtonEventArgs e)
@@ -69,8 +69,7 @@ namespace MainApp.Views
 
             if (!(bool)e.NewValue)
             {
-                if (StopClick != null)
-                    StopClick("执行完成!", true);
+                ScanEnd?.Invoke(FileTotalNum.ToString(), FileTotalNum > 0);
             }
         }
 
@@ -209,7 +208,7 @@ namespace MainApp.Views
             if (value > 100)
                 value = 100;
             ShowNum(value.ToString());
-            System.Threading.Thread.Sleep(500);   
+            System.Threading.Thread.Sleep(500);
 
             var log = new FIleSyncData.Models.SyncLogM()
             {
@@ -261,7 +260,7 @@ namespace MainApp.Views
             {
                 Random random = new Random();
                 RadarSignal rs = new RadarSignal(random.Next(25, 50), new SolidColorBrush(color),
-                  random.Next((int)RadarMeter.MinDistance, (int)RadarMeter.MaxDistance -10),
+                  random.Next((int)RadarMeter.MinDistance, (int)RadarMeter.MaxDistance - 10),
                   random.Next(1, 360))
                 { ToolTip = path };
                 meter.SignalCollection.Add(rs);

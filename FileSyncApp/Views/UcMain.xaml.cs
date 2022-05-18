@@ -1,21 +1,9 @@
-﻿using FIleSyncData;
-using MainApp.Tools;
+﻿using MainApp.Tools;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MainApp.Views
 {
@@ -43,6 +31,7 @@ namespace MainApp.Views
               };
             #endregion
 
+            //同步定时器         
             timer = new System.Windows.Threading.DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 10);
             timer.Tick += (sender, e) =>
@@ -50,17 +39,58 @@ namespace MainApp.Views
                 RunScan(sender, null);
             };
             timer.Start();
-
         }
+
+        /// <summary>
+        /// 扫描开始事件
+        /// </summary>
+        [Category("Behavior")]
+        public event RoutedEventHandler ScanStart;
+
+        /// <summary>
+        /// 扫描结束事件
+        /// </summary>
+        [Category("Behavior")]
+        public event Action<string, bool> ScanEnd;
 
         bool timeIsRun = false;
         System.Windows.Threading.DispatcherTimer timer = null;
+        DateTime dateTime = DateTime.Now;
 
         /// <summary>
-        /// 单击打开按钮
+        /// 扫描结束通知方法
         /// </summary>
-        [Category("Behavior")]
-        public event RoutedEventHandler StartClick;
+        /// <param name="arg1"></param>
+        /// <param name="agr2"></param>
+        public void MainScanEnd(string arg1, bool arg2)
+        {
+            if (arg2)
+            {
+                dateTime = DateTime.Now;
+            }
+            var timeLag = (DateTime.Now - dateTime);
+            string msg;
+            if (timeLag.TotalDays >= 1)
+                msg = $"{Math.Ceiling(timeLag.TotalDays) }天";
+            else if (timeLag.TotalHours >= 1)
+                msg = $"{Math.Ceiling(timeLag.TotalHours) }小时";
+            else if (timeLag.TotalMinutes >= 1)
+                msg = $"{Math.Ceiling(timeLag.TotalMinutes) }分钟";
+            else
+                msg = $"{ (timeLag.Seconds > 0 ? Math.Ceiling(timeLag.TotalSeconds) : 1) }秒";
+            lblSyncMsg.Content = $"上次同步于{msg}前无目录文件更新";
+
+
+            ScanEnd?.Invoke(arg1, arg2);
+
+            if (arg2)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    LogWindow.LoadLogs();
+                });
+            }
+        }
 
         /// <summary>
         /// 开始按钮事件
@@ -72,13 +102,24 @@ namespace MainApp.Views
             RunScan(sender, e);
         }
 
+        /// <summary>
+        /// 执行扫描
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void RunScan(object sender, RoutedEventArgs e)
         {
-            if (timeIsRun == true) return;        
+            if (timeIsRun == true) return;
             timeIsRun = true;
-
-            if (StartClick != null)
-                StartClick(sender, e);
+            try
+            {
+                ScanStart?.Invoke(sender, e);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                //throw;
+            }
 
             timeIsRun = false;
         }
@@ -91,24 +132,6 @@ namespace MainApp.Views
         private void ButHistory_Click(object sender, RoutedEventArgs e)
         {
             LogWindow.ShowWindow();
-
-            ////历史记录容器跟随
-            //MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
-            //var logView = new LogWindow(new SyncLogDAL());
-            //logView.Show();
-            //logView.Left = mainWindow.Left + mainWindow.Width + 5;
-            //logView.Top = mainWindow.Top;
-            ////logView.Activate();
-            //mainWindow.LocationChanged += (dnO, dmE) =>
-            //{
-            //    if (logView.Visibility == Visibility.Visible)
-            //    {
-            //        logView.Left = ((Window)dnO).Left + mainWindow.Width + 5;
-            //        logView.Top = ((Window)dnO).Top;
-            //        logView.Activate();
-            //    }
-            //};
-
         }
 
         /// <summary>
@@ -139,7 +162,5 @@ namespace MainApp.Views
             lblFrom.Content = FileSync.ConfigurationFile.Configuration["FileSync:PathFrom"];
             lblTo.Content = FileSync.ConfigurationFile.Configuration["FileSync:PathTo"];
         }
-
-
     }
 }

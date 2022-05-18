@@ -20,19 +20,33 @@ namespace MainApp.Views
         {
             InitializeComponent();
 
-            InitData(CbxError.IsChecked == true);
+            LoadLogs(CbxError.IsChecked == true);
         }
 
+        /// <summary>
+        /// 初始化显示和历史记录
+        /// </summary>
+        public void LoadLogs()
+        {
+            LoadLogs(CbxError.IsChecked == true);
+        }
 
-        //初始化显示和历史记录
-        private void InitData(bool isFailure )
+        int logsCount = 0;
+        /// <summary>
+        /// 初始化显示和历史记录
+        /// </summary>
+        /// <param name="isFailure"></param>
+        public void LoadLogs(bool isFailure)
         {
             var list = new FIleSyncData.SyncLogDAL().Query(isFailure);
+            if (list.Count == logsCount)
+                return;
+            logsCount = list.Count;
             var OrgList = new ObservableCollection<TreeViewModel>();
 
             if (list != null)
             {
-                foreach (var item in list.GroupBy(m => m.LogDate))
+                foreach (var item in list.OrderByDescending(m => m.LogTime).GroupBy(m => m.LogDate))
                 {
                     var model = new TreeViewModel()
                     {
@@ -95,9 +109,8 @@ namespace MainApp.Views
         {
             LblMsg.Content = $"{(CbxError.IsChecked == true ? "错误" : "历史")}历史记录为空";
 
-            InitData(CbxError.IsChecked==true);
+            LoadLogs(CbxError.IsChecked == true);
         }
-
         string GetExtension(string path, int num = 0)
         {
             int index = path.LastIndexOf(".");
@@ -112,9 +125,7 @@ namespace MainApp.Views
 
             return extenstion.Substring(0, num);
         }
-    
-    
-        
+
     }
 
 }

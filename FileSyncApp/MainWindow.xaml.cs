@@ -44,18 +44,16 @@ namespace MainApp
             };
             #endregion
 
-            ucMain.StartClick += (o, e) =>
+            ucMain.ScanStart += (o, e) =>
             {
                 ucScan.Visibility = Visibility.Visible;
                 Canvas.SetZIndex(ucScan, 100);//置于最顶层
             };
-            //ucScan.SttopClick += (o, e) =>
-            //{
-            //    ucScan.Visibility = Visibility.Hidden;
-            //};
-
+       
             ucScan.DirectoriesAll = directoriesAll;
             ucScan.FileAll = fileAll;
+            //扫描结束
+            ucScan.ScanEnd += ucMain.MainScanEnd;
         }
 
 
