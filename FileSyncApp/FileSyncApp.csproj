@@ -4,6 +4,12 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>cloud-256.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +20,12 @@
   <ItemGroup>
     <ProjectReference Include="..\FIleSyncData\FIleSyncData.csproj" />
     <ProjectReference Include="..\FileSync\FileSync.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="cloud-256.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

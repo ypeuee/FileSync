@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:MainApp.Views"
         FontFamily="Microsoft Yahei UI"
         mc:Ignorable="d"    
-       
+        
         Title="MainWindow" 
         WindowStartupLocation="CenterScreen" Background="White"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"  

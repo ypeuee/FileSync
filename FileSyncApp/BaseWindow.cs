@@ -13,6 +13,8 @@ namespace MainApp
     {
         public BaseWindow() : base()
         {
+             //Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/cloud-256.ico"));
+
 
             // 鼠标左键拖动
             MouseLeftButtonDown += (sender, e) =>

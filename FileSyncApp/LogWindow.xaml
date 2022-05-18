@@ -11,7 +11,9 @@
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"  
         Height="524" Width="340" 
         MinHeight="524" MinWidth="340" 
-        MaxHeight="524" MaxWidth="340"  >
+        MaxHeight="524" MaxWidth="340"  
+        Closing="Window_Closing"
+                  >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="54"/>

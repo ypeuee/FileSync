@@ -24,8 +24,6 @@ namespace MainApp.Views
         }
 
 
-        
-
         //初始化显示和历史记录
         private void InitData(bool isFailure )
         {
@@ -114,38 +112,9 @@ namespace MainApp.Views
 
             return extenstion.Substring(0, num);
         }
-
-     
-        private void TreeViewOrg_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.ClickCount != 2)
-            {
-                return;
-            }
-            if (null != TreeViewOrg.SelectedItem)
-            {
-                var model = TreeViewOrg.SelectedItem as TreeViewModel;
-
-                Open.OpenDir(model.Path);
-            }
-        }
+    
+    
+        
     }
 
-
-
-    public class BoolToVisible : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if ((bool)value)
-                return Visibility.Visible;
-            else
-                return Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

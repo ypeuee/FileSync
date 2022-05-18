@@ -22,8 +22,7 @@
             <TreeView x:Name="TreeViewOrg" Width="340"  BorderThickness="0" 
                       Background="White" HorizontalAlignment="Left"                      
                       ItemTemplate="{StaticResource ItemNode}" 
-                      Style="{StaticResource DefaultTreeView}"
-                      MouseLeftButtonUp="TreeViewOrg_MouseLeftButtonDown"   >                
+                      Style="{StaticResource DefaultTreeView}"                         >
             </TreeView>
             <Grid Name="StackPanel1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <!--<Image  Stretch="None" Source="/Images/history.png" />-->
@@ -36,8 +35,8 @@
                         <Path Stroke="#FF6FB3F6"  StrokeThickness="3" Fill="White" Data="M82,150 S 90,164 108,153 M106 146 A17,17 0 1 1 109,126 M109,125 C100,170 130,169 123,139 M124,151 Q 128,150 130,151 M129,151 C123,165 162,168 154,153 M134,131 Q 122,159 161,151 M145,136 Q 166,131 160,152 M109,127 S 150,110 146,136 "/>
                     </Canvas>
                 </Viewbox>
-           
-            <Label Name="LblMsg" Margin="0,170,0,0"  Height="30" FontSize="15" Content="历史记录为空" HorizontalAlignment="Center" Foreground="#FF7F7F7F"/>
+
+                <Label Name="LblMsg" Margin="0,170,0,0"  Height="30" FontSize="15" Content="历史记录为空" HorizontalAlignment="Center" Foreground="#FF7F7F7F"/>
             </Grid>
 
         </Grid>

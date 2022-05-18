@@ -26,7 +26,6 @@ namespace MainApp
         {
             InitializeComponent();
             this.dal = dal;
-
             ucLog.dal = dal;
         }
 
@@ -36,5 +35,58 @@ namespace MainApp
             this.Hide();
             this.Close();
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (mainWindow != null && logWindow != null)
+            {
+                mainWindow.LocationChanged -= mainWindow_EventHandler;
+            }
+            logWindow = null;
+        }
+
+
+        private static MainWindow mainWindow;
+        private static LogWindow logWindow;
+        /// <summary>
+        /// 显示窗口，不可使用Show方法。
+        /// </summary>
+        public static void ShowWindow()
+        {
+            if (logWindow != null)
+                return;
+
+            if (mainWindow == null)
+            {
+                //历史记录容器跟随
+                 mainWindow = (MainWindow)Application.Current.MainWindow;
+            }
+            if (logWindow == null)
+            {
+                logWindow = new LogWindow(new SyncLogDAL());
+            }
+            logWindow.Show();
+            logWindow.Left = mainWindow.Left + mainWindow.Width + 5;
+            logWindow.Top = mainWindow.Top;
+            //logView.Activate();
+            mainWindow.LocationChanged += mainWindow_EventHandler;
+        }
+
+        static void mainWindow_EventHandler(object? sender, EventArgs e)
+        {
+            if (mainWindow == null || logWindow == null)
+                return;
+
+            if (logWindow.Visibility == Visibility.Visible)
+            {
+                logWindow.Left = ((Window)sender).Left + mainWindow.Width + 5;
+                logWindow.Top = ((Window)sender).Top;
+                logWindow.Activate();
+            }
+        }
+
+
+
+
+
     }
 }
